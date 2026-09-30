@@ -81,6 +81,7 @@ public class SecurityConfig {
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(new FhirAwareAuthenticationEntryPoint(fhirContext)))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/login", "/api/fhir/metadata").permitAll()
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(
                         new BearerTokenAuthenticationFilter(personalAccessTokenService, userRepository),

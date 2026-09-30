@@ -19,6 +19,17 @@ Base: `/api/fhir`. Formato: `application/fhir+json` (`application/json` também 
 
 Erros voltam como `OperationOutcome` (422 para dados inválidos, 400 para JSON malformado, 404, 401 e 500).
 
+## Swagger
+
+A tela interativa fica em `/swagger-ui.html` (em produção, `https://triai-api.onrender.com/swagger-ui.html`) e a especificação OpenAPI em `/v3/api-docs`. Ambas são públicas. Para testar as chamadas:
+
+1. Em `POST /api/login`, informe e-mail e senha e copie o valor de `data.token` da resposta.
+2. Clique em **Authorize** (canto superior direito) e cole o token.
+3. Em `POST /api/fhir/$triage`, o corpo já vem preenchido com um Bundle de exemplo: basta clicar em **Execute**. O corpo é uma caixa de texto livre, porque o Bundle FHIR não tem um esquema fixo no OpenAPI.
+4. Use o `id` da resposta em `GET /api/fhir/RiskAssessment/{id}` e em `POST /api/fhir/RiskAssessment/{id}/$amend`.
+
+O Swagger não expõe dados: as chamadas continuam exigindo o token. Para uma descrição no padrão FHIR, veja `GET /api/fhir/metadata`.
+
 ## O que o servidor lê do Bundle
 
 - **Patient**: `gender` e `birthDate`.

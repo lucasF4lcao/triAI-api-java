@@ -6,6 +6,7 @@ import com.tcc.triAI_api_java.fhir.ComplaintConceptMap;
 import com.tcc.triAI_api_java.fhir.ManchesterCodes;
 import com.tcc.triAI_api_java.fhir.ServerDefinitions;
 import com.tcc.triAI_api_java.service.triage.ChiefComplaintTerminologyService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,11 +34,13 @@ public class FhirTerminologyController {
         this.fhirJson = fhirJson;
     }
 
+    @Operation(summary = "CapabilityStatement do servidor", description = "Descreve o que a API FHIR aceita. Não exige login.")
     @GetMapping("/metadata")
     public ResponseEntity<String> metadata() {
         return fhirJson.ok(definitions.capabilityStatement());
     }
 
+    @Operation(summary = "Lista de sintomas da queixa principal (ValueSet $expand)", description = "Use o id chief-complaints. Cada item tem o código, o termo em inglês e a designação em português.")
     @GetMapping("/ValueSet/{id}/$expand")
     public ResponseEntity<String> expand(@PathVariable String id) {
         return fhirJson.ok(valueSetOf(id));
