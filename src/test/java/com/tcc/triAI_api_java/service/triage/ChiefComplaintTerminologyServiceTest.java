@@ -17,8 +17,8 @@ class ChiefComplaintTerminologyServiceTest {
 
     private void stubVocabulary() {
         when(client.fetch()).thenReturn(List.of(
-                new MlSymptom("chest-pain", "chest pain", "Dor torácica"),
-                new MlSymptom("dyspnea", "dyspnea", "Dispneia (falta de ar)")));
+                new MlSymptom("chest-pain", "chest pain", "Dor torácica", true),
+                new MlSymptom("dyspnea", "dyspnea", "Dispneia (falta de ar)", false)));
     }
 
     @Test
@@ -35,6 +35,23 @@ class ChiefComplaintTerminologyServiceTest {
         assertThat(first.getDisplay()).isEqualTo("chest pain");
         assertThat(first.getDesignationFirstRep().getLanguage()).isEqualTo("pt-BR");
         assertThat(first.getDesignationFirstRep().getValue()).isEqualTo("Dor torácica");
+    }
+
+    @Test
+    void marksTheInternalFragmentsAsAbstractSoClientsDoNotOfferThem() {
+        stubVocabulary();
+
+        List<ValueSet.ValueSetExpansionContainsComponent> contains = service.valueSet().getExpansion().getContains();
+
+        assertThat(contains.get(0).getAbstract()).isFalse();
+        assertThat(contains.get(1).getAbstract()).isTrue();
+    }
+
+    @Test
+    void treatsAnOlderMlResponseWithoutTheFlagAsSelectable() {
+        when(client.fetch()).thenReturn(List.of(new MlSymptom("fever", "fever", "Febre", null)));
+
+        assertThat(service.valueSet().getExpansion().getContainsFirstRep().getAbstract()).isFalse();
     }
 
     @Test

@@ -12,7 +12,7 @@ Base: `/api/fhir`. Formato: `application/fhir+json` (`application/json` também 
 | `POST /$triage` | Recebe um `Bundle` (ou `Parameters` com o Bundle) e devolve um `RiskAssessment` |
 | `GET /RiskAssessment/{id}` | Lê uma classificação, com as alterações feitas pelo profissional |
 | `POST /RiskAssessment/{id}/$amend` | Registra a cor final do profissional (`Parameters`) e devolve o `RiskAssessment` atualizado |
-| `GET /ValueSet/chief-complaints/$expand` | Lista de palavras-chave de queixa, com designação em `pt-BR` |
+| `GET /ValueSet/chief-complaints/$expand` | Lista de palavras-chave de queixa, com designação em `pt-BR`. Os itens internos do modelo vêm com `abstract: true` e não devem ser oferecidos ao usuário |
 | `GET /CodeSystem/{id}` | `chief-complaints` e `manchester-triage` |
 | `GET /ConceptMap/chief-complaints` | Mapeamento de SNOMED CT e CID-10 para a nossa lista |
 | `GET /OperationDefinition/{id}` | `triage` e `amend` |
@@ -73,7 +73,7 @@ Variáveis em `.env.example`. `TRIAGE_MODEL_URL` aponta para o serviço `triAI-m
 - Autenticação por token Bearer próprio. SMART on FHIR não é suportado.
 - A lista de códigos LOINC e SNOMED e o ConceptMap são uma versão inicial, sem revisão clínica.
 - Apenas `reasonCode`, `reasonReference` e `10154-3` alimentam a queixa. Hospitais com outro modelo de dados precisam de mapeamento.
-- Sexo, chegada de ambulância, queixa e sintomas vão ao modelo, mas não são gravados no banco.
+- Chegada de ambulância, queixa e sintomas vão ao modelo, mas não são gravados no banco. O sexo do `Patient` é lido, mas o modelo o ignora.
 
 ## Deploy no Render
 

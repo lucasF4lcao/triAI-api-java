@@ -49,7 +49,7 @@ class FhirEndpointsTest {
         FhirContext fhirContext = FhirContext.forR4();
         FhirJson fhirJson = new FhirJson(fhirContext);
 
-        when(vocabularyClient.fetch()).thenReturn(List.of(new MlSymptom("chest-pain", "chest pain", "Dor torácica")));
+        when(vocabularyClient.fetch()).thenReturn(List.of(new MlSymptom("chest-pain", "chest pain", "Dor torácica", true)));
 
         FhirTriageController triage = new FhirTriageController(createService, reviewService, new RiskAssessmentMapper(), fhirJson);
         FhirTerminologyController terminology = new FhirTerminologyController(

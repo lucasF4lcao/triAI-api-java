@@ -37,6 +37,7 @@ public class ChiefComplaintTerminologyService {
         for (MlSymptom symptom : symptoms) {
             ValueSet.ValueSetExpansionContainsComponent concept = expansion.addContains();
             concept.setSystem(ChiefComplaintVocabulary.CODE_SYSTEM).setCode(symptom.codigo()).setDisplay(symptom.termo());
+            concept.setAbstract(!symptom.isSelectable());
             concept.addDesignation().setLanguage(PORTUGUESE).setValue(symptom.rotulo());
         }
 
