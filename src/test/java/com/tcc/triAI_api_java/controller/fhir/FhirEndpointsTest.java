@@ -1,5 +1,7 @@
 package com.tcc.triAI_api_java.controller.fhir;
 
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -16,6 +18,7 @@ import com.tcc.triAI_api_java.enums.TriageColor;
 import com.tcc.triAI_api_java.exception.ResourceNotFoundException;
 import com.tcc.triAI_api_java.exception.ValidationException;
 import com.tcc.triAI_api_java.fhir.ComplaintConceptMap;
+import com.tcc.triAI_api_java.fhir.ModelOutput;
 import com.tcc.triAI_api_java.fhir.RiskAssessmentMapper;
 import com.tcc.triAI_api_java.fhir.ServerDefinitions;
 import com.tcc.triAI_api_java.fhir.TriageInput;
@@ -28,6 +31,7 @@ import com.tcc.triAI_api_java.service.triage.TriageReviewService;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -75,7 +79,7 @@ class FhirEndpointsTest {
 
     @Test
     void triageReturnsARiskAssessmentAsFhirJson() throws Exception {
-        when(createService.run(anyString())).thenReturn(new TriageOutcome(analysis(TriageColor.ORANGE), TriageInput.empty()));
+        when(createService.run(anyString())).thenReturn(new TriageOutcome(analysis(TriageColor.ORANGE), TriageInput.empty(), ModelOutput.none()));
 
         mockMvc.perform(post("/api/fhir/$triage").contentType(FHIR_JSON).content("{\"resourceType\":\"Bundle\"}"))
                 .andExpect(status().isOk())
@@ -88,8 +92,21 @@ class FhirEndpointsTest {
     }
 
     @Test
+    void triageExposesTheColorProbabilitiesAndTheSafetyRuleAsExtensions() throws Exception {
+        ModelOutput output = new ModelOutput(Map.of(TriageColor.GREEN, 0.6, TriageColor.YELLOW, 0.4), true);
+        when(createService.run(anyString())).thenReturn(new TriageOutcome(analysis(TriageColor.RED), TriageInput.empty(), output));
+        String probabilities = "https://triai.local/fhir/StructureDefinition/color-probability";
+        String safetyRule = "https://triai.local/fhir/StructureDefinition/safety-rule";
+
+        mockMvc.perform(post("/api/fhir/$triage").contentType(FHIR_JSON).content("{\"resourceType\":\"Bundle\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.prediction[0].extension[?(@.url=='" + probabilities + "')]", hasSize(2)))
+                .andExpect(jsonPath("$.prediction[0].extension[?(@.url=='" + safetyRule + "')].valueBoolean", contains(true)));
+    }
+
+    @Test
     void triageAlsoAcceptsPlainJsonAndAnAcceptHeaderOfApplicationJson() throws Exception {
-        when(createService.run(anyString())).thenReturn(new TriageOutcome(analysis(TriageColor.GREEN), TriageInput.empty()));
+        when(createService.run(anyString())).thenReturn(new TriageOutcome(analysis(TriageColor.GREEN), TriageInput.empty(), ModelOutput.none()));
 
         mockMvc.perform(post("/api/fhir/$triage")
                         .contentType(MediaType.APPLICATION_JSON)

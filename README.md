@@ -56,6 +56,7 @@ Se nenhum sinal vital for reconhecido, a API recusa o Bundle (422) e lista os c�
 - `status`: `final`, `preliminary` (modelo indisponível, vermelho aplicado por segurança) ou `amended` (há alteração do profissional).
 - `prediction[0]`: `outcome` com a cor em `https://triai.local/fhir/CodeSystem/manchester-triage` (`red`, `orange`, `yellow`, `green`, `blue`) e `probabilityDecimal` com a confiança.
 - Cada alteração vira mais uma `prediction` (cor final e `rationale` com o motivo); a última vale.
+- `prediction[0]` carrega, em extensões, a **distribuição de probabilidade entre as cores**: uma extensão `https://triai.local/fhir/StructureDefinition/color-probability` por cor, com as sub-extensões `color` (Coding do Protocolo de Manchester) e `probability` (decimal). Quando a cor Vermelho foi definida pela regra de sinais vitais críticos, há também a extensão `.../safety-rule` (`valueBoolean: true`) e uma `note` explicando. Essas informações vêm só na resposta de `$triage`: não são gravadas no banco, então `GET /RiskAssessment/{id}` não as traz.
 - `subject`, `encounter` e `basis` referenciam o que veio no Bundle.
 
 ## Configuração

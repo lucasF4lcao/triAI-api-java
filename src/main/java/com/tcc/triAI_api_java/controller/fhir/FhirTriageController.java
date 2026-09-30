@@ -56,7 +56,7 @@ public class FhirTriageController {
     @PostMapping(value = "/$triage", consumes = {FhirJson.MEDIA_TYPE, "application/json"}, produces = {FhirJson.MEDIA_TYPE, "application/json"})
     public ResponseEntity<String> triage(@RequestBody String body) {
         TriageOutcome outcome = createService.run(body);
-        return fhirJson.ok(mapper.map(outcome.analysis(), List.of(), outcome.input()));
+        return fhirJson.ok(mapper.map(outcome.analysis(), List.of(), outcome.input(), outcome.modelOutput()));
     }
 
     @Operation(

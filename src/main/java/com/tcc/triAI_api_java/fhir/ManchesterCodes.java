@@ -22,9 +22,12 @@ public final class ManchesterCodes {
     private ManchesterCodes() {
     }
 
+    public static Coding coding(TriageColor color) {
+        return new Coding().setSystem(SYSTEM).setCode(color.getValue()).setDisplay(DISPLAYS.get(color));
+    }
+
     public static CodeableConcept concept(TriageColor color) {
-        Coding coding = new Coding().setSystem(SYSTEM).setCode(color.getValue()).setDisplay(DISPLAYS.get(color));
-        return new CodeableConcept().addCoding(coding).setText(DISPLAYS.get(color));
+        return new CodeableConcept().addCoding(coding(color)).setText(DISPLAYS.get(color));
     }
 
     public static TriageColor colorOf(String code) {

@@ -6,6 +6,7 @@ import com.tcc.triAI_api_java.enums.EntryType;
 import com.tcc.triAI_api_java.enums.ExecutionStatus;
 import com.tcc.triAI_api_java.enums.TriageColor;
 import com.tcc.triAI_api_java.fhir.FhirTriageExtractor;
+import com.tcc.triAI_api_java.fhir.ModelOutput;
 import com.tcc.triAI_api_java.fhir.TriageInput;
 import com.tcc.triAI_api_java.fhir.VitalSignsData;
 import com.tcc.triAI_api_java.repository.TriageAnalysisRepository;
@@ -47,7 +48,7 @@ public class CreateTriageAnalysisService {
             executionStatus = ExecutionStatus.SUCCESS;
         } catch (Exception exception) {
             log.error("Triage classification failed, falling back to red.", exception);
-            classification = new TriageClassificationResult(TriageColor.RED, 0.0);
+            classification = new TriageClassificationResult(TriageColor.RED, 0.0, ModelOutput.none());
             executionStatus = ExecutionStatus.ERROR;
         }
 
@@ -70,6 +71,6 @@ public class CreateTriageAnalysisService {
 
         analysis.setVitalSigns(vitalSigns);
 
-        return new TriageOutcome(triageAnalysisRepository.save(analysis), input);
+        return new TriageOutcome(triageAnalysisRepository.save(analysis), input, classification.modelOutput());
     }
 }

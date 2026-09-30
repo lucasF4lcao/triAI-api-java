@@ -9,6 +9,11 @@ import com.tcc.triAI_api_java.enums.TriageColor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import org.hl7.fhir.r4.model.BooleanType;
+import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.DecimalType;
+import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.RiskAssessment;
 import org.junit.jupiter.api.Test;
 
@@ -89,5 +94,42 @@ class RiskAssessmentMapperTest {
     void resolvesColorsByFhirCodeOrPortugueseLabel() {
         assertThat(ManchesterCodes.colorOf("red")).isEqualTo(TriageColor.RED);
         assertThat(ManchesterCodes.colorOf("Laranja")).isEqualTo(TriageColor.ORANGE);
+    }
+
+    @Test
+    void addsEachColorProbabilityAsAnExtensionOfTheModelPrediction() {
+        ModelOutput output = new ModelOutput(Map.of(TriageColor.GREEN, 0.6, TriageColor.YELLOW, 0.4), false);
+
+        RiskAssessment assessment = mapper.map(
+                analysis(TriageColor.GREEN, "0.6", ExecutionStatus.SUCCESS), List.of(), TriageInput.empty(), output);
+
+        List<Extension> extensions = assessment.getPredictionFirstRep().getExtensionsByUrl(TriageExtensions.COLOR_PROBABILITY);
+        Extension green = extensions.stream()
+                .filter(extension -> "green".equals(((Coding) extension.getExtensionByUrl("color").getValue()).getCode()))
+                .findFirst().orElseThrow();
+
+        assertThat(extensions).hasSize(2);
+        assertThat(((DecimalType) green.getExtensionByUrl("probability").getValue()).getValue()).isEqualByComparingTo("0.6");
+        assertThat(assessment.getPredictionFirstRep().getExtensionsByUrl(TriageExtensions.SAFETY_RULE)).isEmpty();
+    }
+
+    @Test
+    void flagsTheSafetyRuleAndExplainsItInANote() {
+        ModelOutput output = new ModelOutput(Map.of(TriageColor.YELLOW, 0.7), true);
+
+        RiskAssessment assessment = mapper.map(
+                analysis(TriageColor.RED, "0.7", ExecutionStatus.SUCCESS), List.of(), TriageInput.empty(), output);
+
+        Extension flag = assessment.getPredictionFirstRep().getExtensionByUrl(TriageExtensions.SAFETY_RULE);
+
+        assertThat(((BooleanType) flag.getValue()).booleanValue()).isTrue();
+        assertThat(assessment.getNote()).extracting(note -> note.getText()).anyMatch(text -> text.contains("regra de sinais vitais críticos"));
+    }
+
+    @Test
+    void addsNoProbabilityExtensionsWhenThereIsNoModelOutput() {
+        RiskAssessment assessment = mapper.map(analysis(TriageColor.GREEN, "0.5", ExecutionStatus.SUCCESS), List.of(), TriageInput.empty());
+
+        assertThat(assessment.getPredictionFirstRep().getExtension()).isEmpty();
     }
 }
