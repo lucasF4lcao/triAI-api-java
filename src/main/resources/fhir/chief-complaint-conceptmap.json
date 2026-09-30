@@ -1,0 +1,521 @@
+{
+  "resourceType": "ConceptMap",
+  "id": "chief-complaints",
+  "url": "https://triai.local/fhir/ConceptMap/chief-complaints",
+  "name": "TriAiChiefComplaintsMap",
+  "title": "Queixas principais: SNOMED CT e CID-10 para o vocabulário do triAI",
+  "status": "draft",
+  "experimental": true,
+  "description": "Mapeamento inicial, ainda sem revisão clínica. Códigos não mapeados são aproveitados apenas pelo texto livre.",
+  "targetUri": "https://triai.local/fhir/ValueSet/chief-complaints",
+  "group": [
+    {
+      "source": "http://snomed.info/sct",
+      "target": "https://triai.local/fhir/CodeSystem/chief-complaints",
+      "element": [
+        {
+          "code": "29857009",
+          "display": "Chest pain",
+          "target": [
+            {
+              "code": "chest-pain",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "267036007",
+          "display": "Dyspnea",
+          "target": [
+            {
+              "code": "dyspnea",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "25064002",
+          "display": "Headache",
+          "target": [
+            {
+              "code": "headache",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "21522001",
+          "display": "Abdominal pain",
+          "target": [
+            {
+              "code": "abdominal-pain",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "386661006",
+          "display": "Fever",
+          "target": [
+            {
+              "code": "fever",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "49727002",
+          "display": "Cough",
+          "target": [
+            {
+              "code": "cough",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "422587007",
+          "display": "Nausea",
+          "target": [
+            {
+              "code": "nausea",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "422400008",
+          "display": "Vomiting",
+          "target": [
+            {
+              "code": "vomiting",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "404640003",
+          "display": "Dizziness",
+          "target": [
+            {
+              "code": "dizziness",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "271594007",
+          "display": "Syncope",
+          "target": [
+            {
+              "code": "syncope",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "91175000",
+          "display": "Seizure",
+          "target": [
+            {
+              "code": "seizure",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "161891005",
+          "display": "Backache",
+          "target": [
+            {
+              "code": "back-pain",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "267102003",
+          "display": "Sore throat symptom",
+          "target": [
+            {
+              "code": "sore-throat",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "62315008",
+          "display": "Diarrhea",
+          "target": [
+            {
+              "code": "diarrhea",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "271807003",
+          "display": "Skin rash",
+          "target": [
+            {
+              "code": "rash",
+              "equivalence": "equivalent"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "http://hl7.org/fhir/sid/icd-10",
+      "target": "https://triai.local/fhir/CodeSystem/chief-complaints",
+      "element": [
+        {
+          "code": "R07.4",
+          "display": "Chest pain, unspecified",
+          "target": [
+            {
+              "code": "chest-pain",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R07.9",
+          "display": "Chest pain, unspecified",
+          "target": [
+            {
+              "code": "chest-pain",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R06.0",
+          "display": "Dyspnoea",
+          "target": [
+            {
+              "code": "dyspnea",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R51",
+          "display": "Headache",
+          "target": [
+            {
+              "code": "headache",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R10.4",
+          "display": "Other and unspecified abdominal pain",
+          "target": [
+            {
+              "code": "abdominal-pain",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R50.9",
+          "display": "Fever, unspecified",
+          "target": [
+            {
+              "code": "fever",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R05",
+          "display": "Cough",
+          "target": [
+            {
+              "code": "cough",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R11.0",
+          "display": "Nausea",
+          "target": [
+            {
+              "code": "nausea",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R11.1",
+          "display": "Vomiting",
+          "target": [
+            {
+              "code": "vomiting",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R11.2",
+          "display": "Nausea with vomiting, unspecified",
+          "target": [
+            {
+              "code": "n-v",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R42",
+          "display": "Dizziness and giddiness",
+          "target": [
+            {
+              "code": "dizziness",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R55",
+          "display": "Syncope and collapse",
+          "target": [
+            {
+              "code": "syncope",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R56.9",
+          "display": "Unspecified convulsions",
+          "target": [
+            {
+              "code": "seizure",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "M54.5",
+          "display": "Low back pain",
+          "target": [
+            {
+              "code": "back-pain",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R07.0",
+          "display": "Pain in throat",
+          "target": [
+            {
+              "code": "sore-throat",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R19.7",
+          "display": "Diarrhoea, unspecified",
+          "target": [
+            {
+              "code": "diarrhea",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R21",
+          "display": "Rash and other nonspecific skin eruption",
+          "target": [
+            {
+              "code": "rash",
+              "equivalence": "inexact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "http://hl7.org/fhir/sid/icd-10-cm",
+      "target": "https://triai.local/fhir/CodeSystem/chief-complaints",
+      "element": [
+        {
+          "code": "R07.4",
+          "display": "Chest pain, unspecified",
+          "target": [
+            {
+              "code": "chest-pain",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R07.9",
+          "display": "Chest pain, unspecified",
+          "target": [
+            {
+              "code": "chest-pain",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R06.0",
+          "display": "Dyspnoea",
+          "target": [
+            {
+              "code": "dyspnea",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R51",
+          "display": "Headache",
+          "target": [
+            {
+              "code": "headache",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R10.4",
+          "display": "Other and unspecified abdominal pain",
+          "target": [
+            {
+              "code": "abdominal-pain",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R50.9",
+          "display": "Fever, unspecified",
+          "target": [
+            {
+              "code": "fever",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R05",
+          "display": "Cough",
+          "target": [
+            {
+              "code": "cough",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R11.0",
+          "display": "Nausea",
+          "target": [
+            {
+              "code": "nausea",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R11.1",
+          "display": "Vomiting",
+          "target": [
+            {
+              "code": "vomiting",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R11.2",
+          "display": "Nausea with vomiting, unspecified",
+          "target": [
+            {
+              "code": "n-v",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R42",
+          "display": "Dizziness and giddiness",
+          "target": [
+            {
+              "code": "dizziness",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R55",
+          "display": "Syncope and collapse",
+          "target": [
+            {
+              "code": "syncope",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R56.9",
+          "display": "Unspecified convulsions",
+          "target": [
+            {
+              "code": "seizure",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "M54.5",
+          "display": "Low back pain",
+          "target": [
+            {
+              "code": "back-pain",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R07.0",
+          "display": "Pain in throat",
+          "target": [
+            {
+              "code": "sore-throat",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R19.7",
+          "display": "Diarrhoea, unspecified",
+          "target": [
+            {
+              "code": "diarrhea",
+              "equivalence": "inexact"
+            }
+          ]
+        },
+        {
+          "code": "R21",
+          "display": "Rash and other nonspecific skin eruption",
+          "target": [
+            {
+              "code": "rash",
+              "equivalence": "inexact"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
