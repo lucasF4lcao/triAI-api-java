@@ -70,7 +70,7 @@ O `Dockerfile` compila o projeto com Maven e roda o JAR em Java 17 (o processo u
 
 Pré-requisitos:
 
-- **Um MySQL fora do Render** (o Render não oferece MySQL). O schema vem das migrations do Laravel em `triAI-api`: aponte o `.env` de lá para o banco novo e rode `php artisan migrate`. Crie também um usuário com `active = 1` e senha em bcrypt.
+- **Um MySQL fora do Render** (o Render não oferece MySQL), acessível pela internet. O schema está em `database/schema.sql` e é idempotente: pode ser aplicado sobre um banco que já tem as tabelas. É preciso ter um usuário com `active = 1` e senha em bcrypt (`$2a$`, `$2b$` ou `$2y$`; os hashes gerados pelo Laravel funcionam).
 - O serviço `triAI-ml` já no ar, para ter a URL dele.
 
 Passos:
@@ -78,6 +78,7 @@ Passos:
 1. No Render, **New > Blueprint**, escolha este repositório e a branch `develop`.
 2. Preencha as variáveis pedidas: `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`, `TRIAGE_MODEL_URL` (URL do ML, com `https://` e sem barra no fim) e `CORS_ALLOWED_ORIGINS` (URL do front).
 3. Se o provedor do banco exigir TLS, ajuste `DB_SSL_MODE` (`REQUIRED`).
-4. Confira: `GET <url>/api/fhir/metadata` devolve o `CapabilityStatement`.
+4. Planos gratuitos de MySQL limitam as conexões por usuário (5 no Clever Cloud). O Blueprint já usa `DB_POOL_SIZE=3`; com o padrão de 10, a API ocupa todas as conexões e nem você consegue mais conectar ao banco. Se o seu limite for diferente, ajuste `DB_POOL_SIZE` para um valor menor que ele.
+5. Confira: `GET <url>/api/fhir/metadata` devolve o `CapabilityStatement`.
 
 No plano gratuito o ML "dorme" após inatividade e a primeira chamada pode demorar. `TRIAGE_MODEL_TIMEOUT_SECONDS` (55 no Blueprint) cobre essa espera; acima do timeout a API responde com Vermelho preliminar.

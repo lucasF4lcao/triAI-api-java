@@ -17,6 +17,8 @@ services:
         sync: false
       - key: DB_SSL_MODE
         value: PREFERRED
+      - key: DB_POOL_SIZE
+        value: "3"
       - key: TRIAGE_MODEL_URL
         sync: false
       - key: CORS_ALLOWED_ORIGINS
